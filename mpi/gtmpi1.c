@@ -3,8 +3,12 @@
 #include <stdio.h>
 #include "gtmpi.h"
 
-void gtmpi_init(int num_processes){
+int P;
+int processor_index;
 
+void gtmpi_init(int num_processes){
+    MPI_Comm_size(MPI_COMM_WORLD, &P);
+    MPI_Comm_rank(MPI_COMM_WORLD, &processor_index);
 }
 
 void gtmpi_barrier(){
