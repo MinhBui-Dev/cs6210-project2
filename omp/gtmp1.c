@@ -2,26 +2,25 @@
 #include "gtmp.h"
 #include <stdio.h>
 
+typedef enum { false, true } bool;
+
 int P;
 int count;
-int sense;
-int local_sense;
+bool sense;
 
 void gtmp_init(int num_threads){
     P = num_threads;
     count = P;
-    sense = 1;
-    local_sense = 1;
+    sense = false;
 }
 
 void gtmp_barrier(){
-    # pragma omp parallel num_threads(P) firstprivate(local_sense) shared(count, sense)
-    local_sense = !local_sense;
+    bool local_sense = !sense;
     if (__sync_fetch_and_sub(&count, 1) == 1) {
         count = P;
-	sense = local_sense;
+	    sense = local_sense;
     } else {
-        while (sense != local_sense);
+        while (local_sense != sense);
     }
 }
 
