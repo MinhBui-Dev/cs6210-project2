@@ -16,7 +16,7 @@ void gtmpi_init(int num_processes){
 }
 
 void gtmpi_barrier(){
-   int sense = 1;
+    int sense = 1;
     char msg = 'a';
     printf("%i\n", P);
     printf("%i\n", (int)log2(P));
