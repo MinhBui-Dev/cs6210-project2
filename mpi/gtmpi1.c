@@ -21,8 +21,6 @@ void gtmpi_barrier(){
     bool sense = false;
     char msg = 'a';
     for (int i = 0; i < log2(P); i++) {
-	// int send_node_index = modulo_euclidian(processor_index + (int) pow(2, i), P);
-	// int recv_node_index = modulo_euclidian(processor_index - (int) pow(2, i), P);
 	int send_node_index = (processor_index - (int) pow(2, i) + P) % P;
 	int recv_node_index = (processor_index + (int) pow(2, i) + P) % P;
 	MPI_Isend(&msg, 1, MPI_CHAR, send_node_index, 1, MPI_COMM_WORLD, &mpi_request);
