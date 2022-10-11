@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <omp.h>
 #include "gtmp.h"
+#include <sys/time.h>
 
 int main(int argc, char** argv)
 {
@@ -21,6 +22,9 @@ int main(int argc, char** argv)
   
   gtmp_init(num_threads);
 
+  struct timeval start_time;
+  struct timeval end_time;
+  gettimeofday(&start_time, NULL);
 #pragma omp parallel shared(num_threads)
    {
      int i;
@@ -28,6 +32,8 @@ int main(int argc, char** argv)
        gtmp_barrier();
      }
    }
+  gettimeofday(&end_time, NULL);
+  printf("Took %ld microseconds\n", end_time.tv_usec - start_time.tv_usec);
 
    gtmp_finalize();
 
