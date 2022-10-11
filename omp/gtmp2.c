@@ -26,11 +26,11 @@ void gtmp_init(int num_threads)
 {
     int p = num_threads;
     int numRound = ceil(log2(num_threads)) + 1;
-    printf("num_threads: %d\nnumRound: %d\n", p, numRound);
+    //printf("num_threads: %d\nnumRound: %d\n", p, numRound);
     tournamentRecord = (record *)malloc(sizeof(record) * num_threads * numRound);
 
     // initialize all flags to false
-    printf("Initializing flags to false\n");
+    //printf("Initializing flags to false\n");
     for (int i = 0; i < num_threads * numRound; i++)
     {
         tournamentRecord[i].flag = false;

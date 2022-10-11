@@ -1,13 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/time.h>
 #include <mpi.h>
 #include "gtmpi.h"
 #include <omp.h>
 #include "gtmp.h"
 
+
 int main(int argc, char **argv)
 {
     int num_processes, num_threads, num_rounds;
+    struct timeval start, end, duration;
 
     MPI_Init(&argc, &argv);
 
@@ -42,8 +45,9 @@ int main(int argc, char **argv)
 
     gtmp_init(num_threads);
 
-    int k;
-    for (k = 0; k < num_rounds; k++)
+
+    gettimeofday(&start, NULL);
+    for (int k = 0; k < num_rounds; k++)
     {
 
         printf("Round %d with P-%d\n", k, pid);
@@ -59,10 +63,15 @@ int main(int argc, char **argv)
         printf(" |-- P-%d reached B-%d\n", pid, k);
         gtmpi_barrier();
     }
+    gettimeofday(&end, NULL);
+    timersub(&end, &start, &duration);
+    printf("Average time taken: %06ld\n", (duration.tv_sec * 1000000 + duration.tv_usec)/num_rounds);
+
     gtmp_finalize();
     gtmpi_finalize();
-
     MPI_Finalize();
+
+    
 
     return 0;
 }
