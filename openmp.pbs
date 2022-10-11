@@ -1,0 +1,19 @@
+#PBS -N openmp.pbs
+#PBS -o openmp.log.out
+#PBS -l nodes=1:ppn=8
+#PBS -l pmem=1gb
+#PBS -l walltime=00:05:00
+#PBS -q coc-ice
+#PBS -j oe
+
+echo "Started on `/bin/hostname`"
+echo "Nodes chosen are:"
+cat $PBS_NODEFILE
+
+cd ~/cs6210/cs6210-project2/omp
+
+export OMP_NUM_THREADS=8
+
+make clean; make all
+./mp1 8
+./mp2 8
