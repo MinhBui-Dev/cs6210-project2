@@ -1,0 +1,19 @@
+#PBS -N mpi.pbs
+#PBS -o mpi.log.out
+#PBS -l nodes=1:ppn=1+1:ppn=1+1:ppn=1+1:ppn=1+1:ppn=1+1:ppn=1
+#PBS -l pmem=1gb
+#PBS -l walltime=00:05:00
+#PBS -q coc-ice
+#PBS -j oe
+
+echo "Started on `/bin/hostname`"
+echo "Nodes chosen are:"
+cat $PBS_NODEFILE
+
+cd ~/cs6210/cs6210-project2/mpi
+
+export MPI_NUM_PROCS=6
+
+make clean; make all
+mpirun -np 6 ./mpi1 6
+mpirun -np 6 ./mpi2 6
